@@ -1,39 +1,33 @@
 package com.piotrzawada.Best_WalkingTrials.Services;
 
 import com.piotrzawada.Best_WalkingTrials.Entities.WalkTrial;
+import com.piotrzawada.Best_WalkingTrials.Repositories.WalkTrialRepo;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 @Service
+@AllArgsConstructor
 public class WalkTrialService {
+
+    private final WalkTrialRepo repo;
 
     private final HashMap<Integer, WalkTrial> walkTrialHashMap = new HashMap<>();
 
-    public WalkTrial save(int id, WalkTrial walkTrial) {
-        return walkTrialHashMap.put(id, walkTrial);
+    public WalkTrial save( WalkTrial walkTrial) {
+        return repo.save(walkTrial);
     }
 
-    public HashMap<Integer, WalkTrial> getAll() {
-        return walkTrialHashMap;
+    public Iterable<WalkTrial> getAll() {
+        return repo.findAll();
     }
 
-    public Integer getId(String name) {
-        for (Integer i : walkTrialHashMap.keySet()) {
-            if (walkTrialHashMap.get(i).getName().equals(name)) {
-                return i;
-            }
-        }
-        return -1;
-    }
     public WalkTrial getByName(String name) {
-        for (Integer i: walkTrialHashMap.keySet()) {
-            if (walkTrialHashMap.get(i).getName().equals(name)) {
-                return  walkTrialHashMap.get(i);
-            }
-        }
-        return null;
+        return repo.findByName(name);
+
     }
-    public void deleteById(int id){
-        walkTrialHashMap.remove(id);
+    public void delete(String name){
+        repo.delete(getByName(name));
     }
 }

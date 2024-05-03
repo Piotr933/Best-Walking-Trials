@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+
 
 @RestController
 @RequestMapping("/api/walking_trials")
@@ -17,8 +17,7 @@ public class WalkTrialController {
 
     @PostMapping("/new")
     public ResponseEntity<?> newWalk(@RequestBody WalkTrial walkTrial) {
-        walkTrialService.save(walkTrialService.getAll().size(), walkTrial);
-
+        walkTrialService.save(walkTrial);
         return new ResponseEntity<>("The walking Trial has been added", HttpStatus.CREATED);
     }
     @GetMapping("/all")
@@ -33,7 +32,7 @@ public class WalkTrialController {
     }
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteWalk(@RequestParam String name) {
-        walkTrialService.deleteById(walkTrialService.getId(name));
+        walkTrialService.delete(name);
         return new ResponseEntity<>( "The Walking trial has been deleted", HttpStatus.OK);
     }
 }
